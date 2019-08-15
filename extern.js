@@ -1,3 +1,4 @@
 const Engine = require("./src/engine.js");
+const engine = new Engine();
 
-module.exports = Engine;
+engine.start();
