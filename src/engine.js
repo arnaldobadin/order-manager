@@ -16,9 +16,10 @@ Engine.prototype.start = async function() {
 	if (this.status) return false;
 	this.status = true;
 
-	await this.context.start();
-	this.manager.start();
-	this.interface.start();
+	if (!await this.context.start()) throw new Error("Can't start context module.");
+	if (!this.manager.start()) throw new Error("Can't start manager module.");
+	if (!await this.interface.start()) throw new Error("Can't start interface module.");
+
 	return true;
 }
 
