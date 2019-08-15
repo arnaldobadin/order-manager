@@ -1,0 +1,24 @@
+{
+  "name": "order-manager",
+  "version": "1.0.0",
+  "description": "simple order interface",
+  "main": "extern.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnaldobadin/order-manager.git"
+  },
+  "author": "Arnaldo Badin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arnaldobadin/order-manager/issues"
+  },
+  "homepage": "https://github.com/arnaldobadin/order-manager#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.20.0",
+    "mysql": "^2.17.1"
+  }
+}

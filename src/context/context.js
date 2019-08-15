@@ -17,7 +17,6 @@ Context.prototype.start = async function() {
 	this.status = true;
 
 	await Sync.wait(this.mysql.schema, this.mysql, config.context.schema);
-
 	this.mysql.open(config.context.database);
 	return true;
 }

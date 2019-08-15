@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS `item` (
 	`order` INT(11) UNIQUE NOT NULL,
 	`sku` VARCHAR(32) NOT NULL,
 	`price` DECIMAL(15, 2) NOT NULL,
-	`description` VARCHAR(1024) NOT NULL,
-	`amount` INT(9) NOT NULL,
+	`description` VARCHAR(1024),
+	`amount` INT(9) DEFAULT 1,
 	CONSTRAINT `pk_item` PRIMARY KEY (`id`),
 	CONSTRAINT `fk_item_order` FOREIGN KEY (`order`) REFERENCES `order`(`id`)
 );

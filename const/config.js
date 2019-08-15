@@ -4,8 +4,8 @@ module.exports = {
 	},
 	context : {
 		host : "localhost",
-		user : "root",
+		user : "eletric-chicken",
 		password : "webarelyremember",
-		schema : __dirname + "schema.sql"
+		schema : __dirname + "/schema.sql"
 	}
 };
