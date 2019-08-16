@@ -19,6 +19,39 @@ Interface.prototype.setup = function() {
 		}
 	);
 
+	this.server.setRoute(Server.METHODS.POST, "/get-order",
+		(request, response) => {
+			const body = request.body;
+
+			if (!Types.isValid(body)) {
+				return response.status(400).json(Server.LAYOUTS.ERROR(400, "Missing body."));
+			}
+
+			const fields = ["id"];
+			if (!Types.isComplete(body, fields)) {
+				return response.status(400).json(
+					Server.LAYOUTS.ERROR(400, `Body should contain: ${fields.join(", ")}.`)
+				);
+			}
+
+			return this.actuator.execute("manager-get-order",
+				body.id,
+				(error, result) => {
+					if (error || !(result && result.id)) {
+						error = (Types.isType(error, Types.STRING) && error) || (error && JSON.stringify(error) || "Unknown error.");
+						return response.status(400).json(
+							Server.LAYOUTS.ERROR(400, error)
+						);
+					}
+
+					const payload = Server.LAYOUTS.SUCCESS(`Order retrieved with success.`);
+					payload.data = result;
+					return response.status(200).json(payload);
+				}
+			);
+		}
+	);
+
 	this.server.setRoute(Server.METHODS.POST, "/insert-order",
 		(request, response) => {
 			const body = request.body;
@@ -27,9 +60,10 @@ Interface.prototype.setup = function() {
 				return response.status(400).json(Server.LAYOUTS.ERROR(400, "Missing body."));
 			}
 
-			if (!Types.isComplete(body, ["name", "contact", "pid", "shipping"])) {
+			const fields = ["name", "contact", "pid", "shipping"];
+			if (!Types.isComplete(body, fields)) {
 				return response.status(400).json(
-					Server.LAYOUTS.ERROR(400, "Missing values in body.")
+					Server.LAYOUTS.ERROR(400, `Body should contain: ${fields.join(", ")}.`)
 				);
 			}
 
@@ -37,12 +71,46 @@ Interface.prototype.setup = function() {
 				body.name, body.contact, body.pid, body.shipping,
 				(error, result) => {
 					if (error || !(result && result.id)) {
+						error = (Types.isType(error, Types.STRING) && error) || (error && JSON.stringify(error) || "Unknown error.");
 						return response.status(400).json(
-							Server.LAYOUTS.ERROR(400, JSON.stringify(error || "Unknown error."))
+							Server.LAYOUTS.ERROR(400, error)
 						);
 					}
 
 					const payload = Server.LAYOUTS.SUCCESS(`Order set with success.`);
+					payload.data = result;
+					return response.status(200).json(payload);
+				}
+			);
+		}
+	);
+
+	this.server.setRoute(Server.METHODS.POST, "/insert-item",
+		(request, response) => {
+			const body = request.body;
+
+			if (!Types.isValid(body)) {
+				return response.status(400).json(Server.LAYOUTS.ERROR(400, "Missing body."));
+			}
+
+			const fields = ["order", "sku", "price", "amount", "description"];
+			if (!Types.isComplete(body, fields)) {
+				return response.status(400).json(
+					Server.LAYOUTS.ERROR(400, `Body should contain: ${fields.join(", ")}.`)
+				);
+			}
+
+			return this.actuator.execute("manager-insert-item",
+				body.order, body.sku, body.price, body.amount, body.description,
+				(error, result) => {
+					if (error || !(result && result.id)) {
+						error = (Types.isType(error, Types.STRING) && error) || (error && JSON.stringify(error) || "Unknown error.");
+						return response.status(400).json(
+							Server.LAYOUTS.ERROR(400, error)
+						);
+					}
+
+					const payload = Server.LAYOUTS.SUCCESS(`Item set with success.`);
 					payload.data = result;
 					return response.status(200).json(payload);
 				}

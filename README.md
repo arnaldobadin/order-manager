@@ -1,28 +1,56 @@
+
 # Order Manager
 
-A Simple Order Manager;
+*A Simple Order Manager;*
 
-### Usage:
+## Usage:
 
 ...
 
-### Dev-Notes:
+## API Entries:
 
+> Insert Order:
+```json
+/* route: /insert-order */
+{
+	"name" : "A Random Guy",
+	"contact" : "randomguy@gmail.com", // valid email or phone
+	"pid" : "9999999999", // valid cpf or cnpj
+	"shipping" : 130.1
+}
 ```
 
+> Get Order:
+```json
+/* route: /get-order */
+{
+	"id" : 3 // order id
+}
 ```
 
-### Todo:
+> Insert Item:
+```json
+/* route: /insert-item */
+{
+	"order" : 17,
+	"sku" : "orange",
+	"price" : 0.1, // unity price
+	"amount" : 4, // sku-based amount (not related to price)
+	"description" : "Just a simple orange. :)" // sku-based description
+}
+```
 
+## Todo:
 
 - [x] Create storage model (probably mysql);
 - [x] Create server module;
 - [x] Create context;
-- [ ] Manage routes;
-- [ ] Add functionality to routes using context module;
+- [x] Manage routes;
+- [x] Add functionality to routes using context module;
+- [ ] Update documentation (like usage and description);
 - [ ] "Dockerize";
 
-### Instructions:
+## Instructions:
 
 ```
 # Back-End Test

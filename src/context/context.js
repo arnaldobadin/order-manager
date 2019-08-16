@@ -59,12 +59,23 @@ Context.prototype.getItem = function(id, callback) {
 	return this.mysql.query(query, callback);
 }
 
+Context.prototype.getItemsByOrder = function(order, callback) {
+	callback = callback || (() => {});
+
+	if (!Types.isInteger(order)) return callback("Missing or invalid order.", null);
+
+	const query = `
+		SELECT * FROM \`${Context.TABLES.ITEM}\` WHERE \`order\` = ${order};
+	`;
+	return this.mysql.query(query, callback);
+}
+
 Context.prototype.insertOrder = function(name, contact, pid, shipping, callback) {
 	callback = callback || (() => {});
 
-	if (!Types.isValid(name)) return callback("Missing or invalid name.", null);
-	if (!Types.isValid(contact)) return callback("Missing or invalid contact.", null);
-	if (!Types.isValid(pid)) return callback("Missing or invalid pid.", null);
+	if (!Types.isType(name, Types.STRING)) return callback("Missing or invalid name.", null);
+	if (!Types.isType(contact, Types.STRING)) return callback("Missing or invalid contact.", null);
+	if (!Types.isType(pid, Types.STRING)) return callback("Missing or invalid pid.", null);
 	if (!Types.isType(shipping, Types.NUMBER)) return callback("Missing or invalid shipping.", null);
 
 	const query = `
@@ -93,10 +104,10 @@ Context.prototype.insertItem = function(order, sku, price, amount = 1, descripti
 	callback = callback || (() => {});
 
 	if (!Types.isInteger(order)) return callback("Missing or invalid order.", null);
-	if (!Types.isValid(sku)) return callback("Missing or invalid sku.", null);
+	if (!Types.isType(sku, Types.STRING)) return callback("Missing or invalid sku.", null);
 	if (!Types.isType(price, Types.NUMBER)) return callback("Missing or invalid price.", null);
 	if (!Types.isInteger(amount)) return callback("Missing or invalid amount.", null);
-	if (!Types.isValid(description)) return callback("Missing or invalid description.", null);
+	if (!Types.isType(description, Types.STRING)) return callback("Missing or invalid description.", null);
 
 	const query = `
 		INSERT INTO \`${Context.TABLES.ITEM}\` (\`order\`, \`sku\`, \`price\`, \`amount\`, \`description\`)
