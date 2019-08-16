@@ -6,12 +6,18 @@ A Simple Order Manager;
 
 ...
 
+### Dev-Notes:
+
+```
+
+```
+
 ### Todo:
 
 
-- [ ] Create storage model (probably mysql);
-- [ ] Create server module;
-- [ ] Create context;
+- [x] Create storage model (probably mysql);
+- [x] Create server module;
+- [x] Create context;
 - [ ] Manage routes;
 - [ ] Add functionality to routes using context module;
 - [ ] "Dockerize";

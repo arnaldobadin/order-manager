@@ -37,6 +37,28 @@ Context.prototype.stop = async function() {
 
 Context.TABLES = {ORDER : "order", ITEM : "item"};
 
+Context.prototype.getOrder = function(id, callback) {
+	callback = callback || (() => {});
+
+	if (!Types.isInteger(id)) return callback("Missing or invalid id.", null);
+
+	const query = `
+		SELECT * FROM \`${Context.TABLES.ORDER}\` WHERE \`id\` = ${id};
+	`;
+	return this.mysql.query(query, callback);
+}
+
+Context.prototype.getItem = function(id, callback) {
+	callback = callback || (() => {});
+
+	if (!Types.isInteger(id)) return callback("Missing or invalid id.", null);
+
+	const query = `
+		SELECT * FROM \`${Context.TABLES.ITEM}\` WHERE \`id\` = ${id};
+	`;
+	return this.mysql.query(query, callback);
+}
+
 Context.prototype.insertOrder = function(name, contact, pid, shipping, callback) {
 	callback = callback || (() => {});
 
@@ -47,7 +69,12 @@ Context.prototype.insertOrder = function(name, contact, pid, shipping, callback)
 
 	const query = `
 		INSERT INTO \`${Context.TABLES.ORDER}\` (\`name\`, \`contact\`, \`pid\`, \`shipping\`)
-		VALUES ('${name}', '${contact}', '${pid}', ${shipping});
+		VALUES ('${name}', '${contact}', '${pid}', ${shipping})
+		ON DUPLICATE KEY UPDATE
+			\`name\` = '${name}',
+			\`contact\` = '${contact}',
+			\`pid\` = '${pid}',
+			\`shipping\` = ${shipping};
 		SELECT LAST_INSERT_ID() AS id;
 	`;
 
@@ -73,7 +100,11 @@ Context.prototype.insertItem = function(order, sku, price, amount = 1, descripti
 
 	const query = `
 		INSERT INTO \`${Context.TABLES.ITEM}\` (\`order\`, \`sku\`, \`price\`, \`amount\`, \`description\`)
-		VALUES (${order}, '${sku}', ${price}, ${amount}, '${description}');
+		VALUES (${order}, '${sku}', ${price}, ${amount}, '${description}')
+		ON DUPLICATE KEY UPDATE
+			\`price\` = ${price},
+			\`amount\` = \`amount\` + ${amount},
+			\`description\` = '${description}';
 		SELECT LAST_INSERT_ID() AS id;
 	`;
 
@@ -86,6 +117,31 @@ Context.prototype.insertItem = function(order, sku, price, amount = 1, descripti
 			return callback(null, id);
 		}
 	);
+}
+
+Context.prototype.deleteOrder = function(id, callback) {
+	callback = callback || (() => {});
+
+	if (!Types.isInteger(id)) return callback("Missing or invalid id.", null);
+
+	const query = `
+		DELETE FROM \`${Context.TABLES.ITEM}\` WHERE \`order\` = ${id};
+		DELETE FROM \`${Context.TABLES.ORDER}\` WHERE \`id\` = ${id};
+	`;
+
+	return this.mysql.query(query, callback);
+}
+
+Context.prototype.deleteItem = function(id, callback) {
+	callback = callback || (() => {});
+
+	if (!Types.isInteger(id)) return callback("Missing or invalid id.", null);
+
+	const query = `
+		DELETE FROM \`${Context.TABLES.ITEM}\` WHERE \`id\` = ${id};
+	`;
+
+	return this.mysql.query(query, callback);
 }
 
 module.exports = Context;

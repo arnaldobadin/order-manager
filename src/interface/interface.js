@@ -18,6 +18,37 @@ Interface.prototype.setup = function() {
 			return response.status(200).send(payload);
 		}
 	);
+
+	this.server.setRoute(Server.METHODS.POST, "/insert-order",
+		(request, response) => {
+			const body = request.body;
+
+			if (!Types.isValid(body)) {
+				return response.status(400).json(Server.LAYOUTS.ERROR(400, "Missing body."));
+			}
+
+			if (!Types.isComplete(body, ["name", "contact", "pid", "shipping"])) {
+				return response.status(400).json(
+					Server.LAYOUTS.ERROR(400, "Missing values in body.")
+				);
+			}
+
+			return this.actuator.execute("manager-insert-order",
+				body.name, body.contact, body.pid, body.shipping,
+				(error, result) => {
+					if (error || !(result && result.id)) {
+						return response.status(400).json(
+							Server.LAYOUTS.ERROR(400, JSON.stringify(error || "Unknown error."))
+						);
+					}
+
+					const payload = Server.LAYOUTS.SUCCESS(`Order set with success.`);
+					payload.data = result;
+					return response.status(200).json(payload);
+				}
+			);
+		}
+	);
 }
 
 Interface.prototype.start = async function() {
