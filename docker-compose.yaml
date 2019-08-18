@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+    order-manager:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: order-manager
+        restart: always
+        depends_on:
+            - storage
+        links:
+            - storage
+        environment:
+            MYSQL_HOST: "storage"
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "webarelyremember"
+            SERVER_PORT: "7777"
+        ports:
+            - "7777:7777"
+        expose:
+            - "7777"
+
+    storage:
+        image: mysql:5.7
+        container_name: storage
+        restart: always
+        environment:
+            MYSQL_HOST: "storage"
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "webarelyremember"
+            MYSQL_ROOT_PASSWORD: "webarelyremember"
+        ports:
+            - "3306:3306"

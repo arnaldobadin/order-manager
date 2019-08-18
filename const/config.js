@@ -1,20 +1,14 @@
-module.exports = {
+const config = {
 	interface : {
-		port : 7777
+		port : parseInt(process.env.SERVER_PORT) || 7777
 	},
 	context : {
-		host : "localhost",
-		user : "eletric-chicken",
-		password : "webarelyremember",
+		host : process.env.MYSQL_HOST || "localhost",
+		user : process.env.MYSQL_USER || "eletric-chicken",
+		password : process.env.MYSQL_PASSWORD || "somethingdifferent",
 		database : "storage",
 		schema : __dirname + "/schema.sql"
 	}
 };
 
-/*
-	-- Instructions for add a new user into Mysql Database --
-	UNINSTALL PLUGIN validate_password;
-	CREATE USER 'eletric-chicken'@'localhost' IDENTIFIED BY 'webarelyremember';
-	GRANT ALL PRIVILEGES ON * . * TO 'eletric-chicken'@'localhost';
-	FLUSH PRIVILEGES;
-*/
+module.exports = config;
