@@ -28,9 +28,18 @@ Every file was written by repo's owner, including lib folder. Execept for npm mo
 
 ## Setup:
 
+Build and starts the application and storage:
 ```bash
 	sudo docker-compose up
 ```
+
+You should have in mind that I'm using a bash script (https://github.com/ufoscout/docker-compose-wait) to wait for storage (mysql) setup status - should take 45 seconds in an average notebook -. And only after that I'm deploying the application;
+
+The whole process can be up to 3-5 minutes. Its all about hardware and network;
+
+So: compose-up > mysql up > nodejs up > can use api;
+
+Obs: you must have access to github network at least;
 
 ## Usage:
 
