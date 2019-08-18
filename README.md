@@ -8,7 +8,6 @@
 A Order Manager written on NodeJS and using MySQL Server as storage, that receives orders and items as inputs;
 
 Orders can be set by a API Entry, just like "their" items;
-
 Each order and item have its own attributes and can be overwritten on update;
 
 Order attributes:
@@ -35,8 +34,11 @@ Build and starts the application and storage:
 
 You should have in mind that I'm using a bash script (https://github.com/ufoscout/docker-compose-wait) to wait for storage (mysql) setup status - should take 45 seconds in an average notebook -. And only after that I'm deploying the application;
 
-The whole process can be up to 3-5 minutes. Its all about hardware and network;
+Wait for: "Host storage:3306 is now available";
 
+![](https://i.imgur.com/ihzmGf7.png)
+
+The whole process can be up to 3-5 minutes. Its all about hardware and network;
 So: compose-up > mysql up > nodejs up > can use api;
 
 Obs: you must have access to github network at least;
