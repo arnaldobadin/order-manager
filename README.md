@@ -117,7 +117,7 @@ RESULT>
 
 Obs:
 	- Quota is the relative shipping rate;
-	- Both order and item can are updating on duplicate. Order is changing values and item beside changing value is increasing amount too;
+	- Both order and item are updating on duplicate. Order is changing values and item, beside changing values, is increasing amount too;
 
 ### Entries:
 
