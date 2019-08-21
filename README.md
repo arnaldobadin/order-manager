@@ -23,7 +23,7 @@ Item attributes:
 	- amount;
 	- description;
 
-Every file was written by repo's owner, including lib folder. Execept for npm modules and npm's generated files;
+Every file was written by repo's owner, including lib folder. Except for npm modules and npm's generated files;
 
 ## Setup:
 
@@ -54,7 +54,7 @@ POST> http://localhost:7777/insert-order
 	"name" : "A Random Guy",
 	"contact" : "randomguy@gmail.com",
 	"pid" : "9999999999",
-	"shipping" : 130.1
+	"shipping" : 20.1
 }
 RESULT>
 {
@@ -96,9 +96,9 @@ RESULT>
 	"message": "Order retrieved with success.",
 	"data": {
 		"id": 7,
-		"name": "Armando Baldinho",
-		"contact": "11983917040",
-		"pid": "36126197801",
+		"name" : "A Random Guy",
+		"contact" : "randomguy@gmail.com",
+		"pid" : "9999999999",
 		"shipping": 20.1,
 		"items": [
 			{
