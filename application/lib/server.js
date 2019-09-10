@@ -54,7 +54,7 @@ Server.prototype.stop = function(callback) {
 	return true;
 }
 
-Server.prototype.setRoute = function(method, path, callback) {
+Server.prototype.route = function(method, path, callback) {
 	if (!(method && typeof(method) == "string" && method.length)) {
 		return false;
 	}
