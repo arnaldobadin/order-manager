@@ -73,6 +73,7 @@ Server.prototype.route = function(method, path, callback) {
 			break;
 		case Server.METHODS.POST:
 			this.server.post(path, callback);
+			break;
 		default:
 			return false;
 	}
